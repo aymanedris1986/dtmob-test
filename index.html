@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Parameters Capture</title>
+</head>
+<body>
+    <h1>Capture URL Parameters</h1>
+    <p>Click the link below to see the captured URL parameters:</p>
+    <a id="parameterLink" href="">Click me</a>
+
+    <script>
+        // Function to get URL parameters
+        function getUrlParameters() {
+            const params = new URLSearchParams(window.location.search);
+            const entries = params.entries();
+            let paramString = '';
+            for (const [key, value] of entries) {
+                paramString += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`;
+            }
+            // Remove the trailing '&'
+            if (paramString.endsWith('&')) {
+                paramString = paramString.slice(0, -1);
+            }
+            return paramString;
+        }
+
+        // Append parameters to the <a> tag
+        function appendParametersToLink() {
+            const paramString = getUrlParameters();
+            const link = document.getElementById('parameterLink');
+            link.href = `dtmobile://dtapp?${paramString}`;
+        }
+
+        // Execute function on page load
+        window.onload = appendParametersToLink;
+    </script>
+</body>
+</html>

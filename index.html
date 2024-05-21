@@ -1,40 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Parameters Capture</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>URL Parameters Capture</title>
 </head>
 <body>
-    <h1>Capture URL Parameters</h1>
-    <p>Click the link below to see the captured URL parameters:</p>
-    <a id="parameterLink" href="">Click me</a>
+<h1>Capture URL Parameters</h1>
+<script>
+// Function to get URL parameters
+function getUrlParameters() {
+  const params = new URLSearchParams(window.location.search);
+  const entries = params.entries();
+  let paramString = '';
+  for (const [key, value] of entries) {
+    paramString += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`;
+  }
+  // Remove the trailing '&'
+  if (paramString.endsWith('&')) {
+    paramString = paramString.slice(0, -1);
+  }
+  return paramString;
+}
 
-    <script>
-        // Function to get URL parameters
-        function getUrlParameters() {
-            const params = new URLSearchParams(window.location.search);
-            const entries = params.entries();
-            let paramString = '';
-            for (const [key, value] of entries) {
-                paramString += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`;
-            }
-            // Remove the trailing '&'
-            if (paramString.endsWith('&')) {
-                paramString = paramString.slice(0, -1);
-            }
-            return paramString;
-        }
+// Function to validate parameters (add your own validation logic here)
+function validateParameters(params) {
+  // Implement your validation logic based on expected parameters
+  // This example simply checks for the presence of a required parameter
+  return true;
+}
 
-        // Append parameters to the <a> tag
-        function appendParametersToLink() {
-            const paramString = getUrlParameters();
-            const link = document.getElementById('parameterLink');
-            link.href = `dtmobile://dtapp?${paramString}`;
-        }
+// Function to handle errors
+function handleError(message) {
+  alert(`Error: ${message}`); // Replace alert with a more user-friendly error message
+  // Optionally, log the error to your server for further investigation
+}
 
-        // Execute function on page load
-        window.onload = appendParametersToLink;
-    </script>
+// Function to open app with parameters
+function openApp(params) {
+  const link = `dtmobile://dtapp?${params}`;
+  try {
+    window.location.href = link;
+  } catch (error) {
+    handleError('Failed to open app');
+  }
+}
+
+// Main execution
+const paramString = getUrlParameters();
+if (validateParameters(paramString)) {
+  openApp(paramString);
+} else {
+  handleError('Invalid parameters received');
+}
+</script>
 </body>
 </html>

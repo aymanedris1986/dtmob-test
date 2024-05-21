@@ -6,7 +6,9 @@
 <title>URL Parameters Capture</title>
 </head>
 <body>
-<h1>Capture URL Parameters</h1>
+<p>If you are not automatically redirected to the app within a few seconds, please click the link below:</p>
+<a id="redirectLink" href="#">Click here to open the app</a>
+
 <script>
 // Function to get URL parameters
 function getUrlParameters() {
@@ -49,7 +51,9 @@ function openApp(params) {
 // Main execution
 const paramString = getUrlParameters();
 if (validateParameters(paramString)) {
-  openApp(paramString);
+  const redirectLink = document.getElementById('redirectLink');
+  redirectLink.href = `dtmobile://dtapp?${paramString}`; // Set app link for manual click
+  setTimeout(() => openApp(paramString), 2000); // Open app automatically after 2 seconds
 } else {
   handleError('Invalid parameters received');
 }
